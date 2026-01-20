@@ -1,0 +1,27 @@
+.Funcionarios {
+  display: flex;                
+  justify-content: center;      
+  align-items: flex-start;      
+  min-height: 100vh;            
+}
+
+.TabelaFuncionarios {
+  width: 80%;                   
+  max-width: 800px;             
+  text-align: center;           
+  border-collapse: collapse;    
+}
+ 
+.TabelaFuncionarios thead {
+  background-color: #006bb4;
+  color: #fff;
+}
+
+.TabelaFuncionarios tbody tr:nth-child(even) {
+  background-color: #eae6e6;
+}
+
+.TabelaFuncionarios td,
+.TabelaFuncionarios th {
+  padding: 4px;
+}

@@ -1,0 +1,15 @@
+/* ListaAcomodacoes.css */
+
+/* Estilos para o cabeçalho da tabela */
+.table-header {
+    background-color: #006bb4; /* Cor de fundo azul */
+    color: white; /* Cor do texto branca */
+    text-align: center; /* Centraliza o texto */
+  }
+  
+  /* Para garantir que a cor dos cabeçalhos da tabela não seja sobrescrita */
+  .table-header th {
+    background-color: #006bb4 !important; /* Garante a cor de fundo azul */
+    color: white !important; /* Garante a cor do texto branca */
+  }
+  

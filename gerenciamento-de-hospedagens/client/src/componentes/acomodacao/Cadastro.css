@@ -1,0 +1,56 @@
+/* src/componentes/acomodacao/CadastroAcomodacao.css */
+.form-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 10px auto 0; /* Diminui a margem superior para aproximar o conteúdo do topo */
+  padding: 20px; /* Reduz o padding para ter mais controle */
+}
+
+.content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 0px; /* Reduz o padding para aproximar o conteúdo das bordas */
+  box-shadow: 0 4px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 0px; /* Reduz a margem superior para o conteúdo ficar mais próximo */
+}
+
+.header h1 {
+  margin: 0;
+  color: #4a0082;
+  font-size: 28px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #4a0082;
+  box-shadow: 0 0 4px rgba(74, 0, 130, 0.2);
+}
+
+
+

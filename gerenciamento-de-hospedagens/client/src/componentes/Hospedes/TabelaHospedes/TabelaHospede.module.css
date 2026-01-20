@@ -1,0 +1,27 @@
+.Hospedes {
+  display: flex;
+  justify-content: center; /* Centraliza a tabela horizontalmente */
+  align-items: flex-start; /* Alinha a tabela ao topo verticalmente */
+  min-height: 100vh; /* Define a altura mínima como 100% da altura da tela */
+}
+
+.TabelaHospedes {
+  width: 80%; /* Define a largura da tabela em 80% do contêiner */
+  max-width: 800px; /* Limita a largura máxima da tabela */
+  text-align: center; /* Centraliza o texto nas células */
+  border-collapse: collapse; /* Remove os espaçamentos entre bordas das células */
+}
+
+.TabelaHospedes thead {
+  background-color: #006bb4; /* Cor de fundo para o cabeçalho */
+  color: #fff; /* Cor do texto no cabeçalho */
+}
+
+.TabelaHospedes tbody tr:nth-child(even) {
+  background-color: #eae6e6; /* Colore as linhas pares do corpo da tabela */
+}
+
+.TabelaHospedes td,
+.TabelaHospedes th {
+  padding: 4px; /* Espaçamento interno das células para melhor legibilidade */
+}

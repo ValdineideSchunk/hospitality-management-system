@@ -1,0 +1,55 @@
+.reservation-bar {
+    position: absolute;
+    top: 25%; /* Centraliza verticalmente */
+    height: 50%; /* Define a altura da barra */
+    background-color: #007bff; /* Cor padrão */
+    color: #fff; /* Texto branco */
+    font-weight: bold; /* Texto em negrito */
+    display: flex; /* Flexbox para centralizar o texto */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    border-radius: 0; /* Remove bordas arredondadas padrão */
+    overflow: hidden; /* Evita texto ultrapassar */
+    text-overflow: ellipsis; /* Adiciona reticências para textos longos */
+    white-space: nowrap; /* Evita quebra de linha */
+  }
+  
+
+.reservation-bar.start {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  left: 50%; /* Começa no meio da célula */
+  width: 50%; /* Ocupa metade da largura da célula inicial */
+}
+
+.reservation-bar.end {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  left: 0; /* Começa no início da célula final */
+  width: 50%; /* Ocupa metade da largura da célula final */
+}
+
+.reservation-bar.middle {
+  left: 0; /* Barra ocupa toda a célula intermediária */
+  width: 100%; /* Ocupa toda a largura */
+}
+
+/* Estilo para ajustar o mapa */
+.table-container {
+    margin-left: 50px; /* Espaço entre o mapa e o menu lateral */
+    margin-top: 20px;  /* Espaço entre o mapa e a parte superior da página */
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    gap: 10px;               /* Espaço entre os elementos */
+    margin-bottom: 10px;     /* Espaço abaixo do cabeçalho */
+  }
+  
+  .header-container input {
+    text-align: center; /* Centraliza o texto dentro dos inputs */
+  }
+  
+  

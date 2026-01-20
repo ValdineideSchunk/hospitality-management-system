@@ -1,0 +1,28 @@
+/* Estilo para todas as abas */
+.nav-tabs .nav-link {
+    border: 1px solid #2c3321; 
+    border-bottom: none; 
+    color: #495057; 
+    background-color: transparent; 
+    transition: none; 
+}
+
+/* Remover o efeito de hover */
+.nav-tabs .nav-link:hover {
+    color: inherit; 
+    background-color: transparent; 
+    border-color: #212a33; 
+}
+
+/* Estilo para a aba ativa */
+.nav-tabs .nav-link.active {
+    border: 2px solid rgb(61, 39, 121); 
+    background-color: #9ad4ecc8; 
+    color: #495057; 
+    border-bottom: none;
+}
+
+ 
+
+  
+  
