@@ -35,8 +35,9 @@ const Calendario = () => {
     const fetchData = async () => {
       try {
         // Requisição para buscar todas as acomodações
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
         const accommodationsResponse = await axios.get(
-          "http://localhost:5000/acomodacoes"
+          `${apiUrl}/acomodacoes`
         );
         const accommodationsData = accommodationsResponse.data;
 
@@ -44,7 +45,7 @@ const Calendario = () => {
 
         // Requisição para buscar todas as reservas
         const reservationsResponse = await axios.get(
-          "http://localhost:5000/reservas"
+          `${apiUrl}/reservas`
         );
         const reservationsData = reservationsResponse.data;
 

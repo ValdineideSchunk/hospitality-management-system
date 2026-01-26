@@ -43,7 +43,8 @@ function TabelaReservas() {
 
   async function carregarReservas() {
     try {
-      const resposta = await fetch('http://localhost:5000/reservas', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/reservas`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +66,8 @@ function TabelaReservas() {
 
   const handleStatusAction = async (id, novoStatus) => {
     try {
-      const resposta = await fetch(`http://localhost:5000/reservas/${id}/status`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/reservas/${id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

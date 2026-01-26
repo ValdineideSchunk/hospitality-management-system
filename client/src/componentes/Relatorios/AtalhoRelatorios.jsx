@@ -42,7 +42,8 @@ const AtalhoRelatorios = () => {
             if (!dataInicioPrev || !dataFimPrev) return;
 
             try {
-                const response = await axios.get('http://localhost:5000/relatorios/ocupacao', {
+                const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+                const response = await axios.get(`${apiUrl}/relatorios/ocupacao`, {
                     params: { dataInicio: dataInicioPrev, dataFim: dataFimPrev },
                 });
 
@@ -72,7 +73,8 @@ const AtalhoRelatorios = () => {
             if (!dataInicio || !dataFim) return;
         
             try {
-                const response = await axios.get('http://localhost:5000/relatorios/financeiro', {
+                const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+                const response = await axios.get(`${apiUrl}/relatorios/financeiro`, {
                     params: { dataInicio, dataFim },
                 });
         
@@ -102,7 +104,8 @@ const AtalhoRelatorios = () => {
             if (!dataInicioPrev || !dataFimPrev) return;
 
             try {
-                const response = await axios.get('http://localhost:5000/relatorios/previsao-receita', {
+                const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+                const response = await axios.get(`${apiUrl}/relatorios/previsao-receita`, {
                     params: { dataInicio: dataInicioPrev, dataFim: dataFimPrev },
                 });
 

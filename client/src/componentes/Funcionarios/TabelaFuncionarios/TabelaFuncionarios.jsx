@@ -20,7 +20,8 @@ function TabelaFuncionarios() {
   // Função assíncrona para carregar a lista de funcionários da API
   async function carregarFuncionarios() {
     try {
-      const resposta = await fetch('http://localhost:5000/funcionario', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/funcionario`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

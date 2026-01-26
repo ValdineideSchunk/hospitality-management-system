@@ -6,7 +6,8 @@ function CadastroHospede() {
   // Função assíncrona para cadastrar um novo hóspede
   async function cadastrarHospede(infoHospede) {
     try {
-      const resposta = await fetch('http://localhost:5000/hospede', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/hospede`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

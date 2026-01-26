@@ -7,7 +7,8 @@ function CadastroFuncionario() {
   async function cadastrarFuncionario(infoFuncionario) {
     try {
       // Faz uma requisição POST para o backend com os dados do funcionário
-      const resposta = await fetch('http://localhost:5000/funcionario', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/funcionario`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

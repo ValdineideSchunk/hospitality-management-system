@@ -35,7 +35,8 @@ const RelatorioFinanceiro = () => {
 
     const buscarRelatorio = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/relatorios/financeiro', {
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+            const response = await axios.get(`${apiUrl}/relatorios/financeiro`, {
                 params: { dataInicio, dataFim }
             });
             setDadosRelatorio(response.data);

@@ -53,7 +53,8 @@ function FormCadFuncionario({ handleSubmit }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`http://localhost:5000/funcionario/${id}`);
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/funcionario/${id}`);
         if (!response.ok) {
           throw new Error('Erro ao carregar os dados');
         }

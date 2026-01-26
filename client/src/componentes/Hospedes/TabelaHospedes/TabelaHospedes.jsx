@@ -17,7 +17,8 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
 
   async function carregarHospedes() {
     try {
-      const resposta = await fetch('http://localhost:5000/hospede', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/hospede`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

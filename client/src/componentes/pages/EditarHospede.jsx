@@ -32,7 +32,8 @@ function EditarHospede() {
     // Função para buscar dados do hóspede pelo ID
     async function buscarHospede() {
       try {
-        const resposta = await fetch(`http://localhost:5000/hospedes/${id}`, {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const resposta = await fetch(`${apiUrl}/hospedes/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -63,7 +64,8 @@ function EditarHospede() {
     if (activeTab === 'adicionais') {
       // Última aba, envia o formulário
       try {
-        const resposta = await fetch(`http://localhost:5000/hospedes/${id}`, {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const resposta = await fetch(`${apiUrl}/hospedes/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

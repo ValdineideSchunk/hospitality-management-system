@@ -44,7 +44,8 @@ function EditarFuncionario() {
     // Função para buscar dados do funcionário pelo ID
     async function buscarFuncionario() {
       try {
-        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const resposta = await fetch(`${apiUrl}/funcionario/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -96,7 +97,8 @@ function EditarFuncionario() {
     // Verifica se estamos na aba 'adicionais' para salvar os dados
     if (activeTab === 'adicionais') {
       try {
-        const resposta = await fetch(`http://localhost:5000/funcionario/${id}`, {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const resposta = await fetch(`${apiUrl}/funcionario/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

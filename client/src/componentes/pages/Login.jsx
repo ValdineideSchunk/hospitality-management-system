@@ -44,7 +44,8 @@ function Login() {
   async function efetuarLogin() {
     setIsLoading(true);
     try {
-      const resposta = await fetch("http://localhost:5000/logar", {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/logar`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +66,7 @@ function Login() {
         localStorage.setItem("userCargo", data.cargo);
         localStorage.setItem("userCPF", formData.login);
         setAuthError("");
-        window.location.href = "http://localhost:3000/home";
+        window.location.href = "/home";
       } else {
         setAuthError("Erro inesperado: Nome do usuário não encontrado.");
       }

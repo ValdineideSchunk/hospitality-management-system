@@ -7,6 +7,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Alertas from '../layout/Alertas';
 
 
+const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim, isEditing, nomeHospede, nomeAcomodacao }) {
   const [mostrarTabelaHospedes, setMostrarTabelaHospedes] = useState(false);
   const [mostrarTabelaAcomodacoes, setMostrarTabelaAcomodacoes] = useState(false);
@@ -133,7 +135,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
     if (isEditing) {
       try {
         const response = await fetch(
-          `http://localhost:5000/acomodacoes/disponibilidade/${dataEntradaExata}/${dataSaidaExata}/${formData.fk_acomodacao}/${formData.id_reserva}`
+          `${apiUrl}/acomodacoes/disponibilidade/${dataEntradaExata}/${dataSaidaExata}/${formData.fk_acomodacao}/${formData.id_reserva}`
         );
 
         if (!response.ok) {

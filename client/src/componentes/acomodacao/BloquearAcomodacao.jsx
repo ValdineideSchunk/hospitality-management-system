@@ -36,8 +36,9 @@ function BloquearAcomodacao() {
       }
 
       // Verificar se existem reservas conflitantes
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const verificarResponse = await fetch(
-        `http://localhost:5000/acomodacoes/verificar-conflito`,
+        `${apiUrl}/acomodacoes/verificar-conflito`,
         {
           method: "POST",
           headers: {
@@ -61,7 +62,7 @@ function BloquearAcomodacao() {
       }
 
       // Se não houver conflitos, realiza o bloqueio
-      const response = await fetch("http://localhost:5000/bloquear", {
+      const response = await fetch(`${apiUrl}/bloquear`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

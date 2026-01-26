@@ -23,7 +23,8 @@ const Home = () => {
   // Função para buscar acomodações e seus respectivos status
   const fetchAcomodacoesComStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/acomodacoes');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/acomodacoes`);
       if (!response.ok) {
         throw new Error('Erro ao buscar acomodações');
       }
@@ -39,8 +40,9 @@ const Home = () => {
           }
 
           try {
+            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
             const reservaResponse = await fetch(
-              `http://localhost:5000/status/${acomodacao.id}?data=${dataAtual}`
+              `${apiUrl}/status/${acomodacao.id}?data=${dataAtual}`
             );
 
             if (reservaResponse.status === 404) {
@@ -97,7 +99,8 @@ const Home = () => {
     if (!selectedAcomodacao || newStatus !== 'disponível') return;
 
     try {
-      const resposta = await fetch(`http://localhost:5000/acomodacoes/${selectedAcomodacao}`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/acomodacoes/${selectedAcomodacao}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +123,8 @@ const Home = () => {
     if (!selectedReserva || !newStatus) return;
 
     try {
-      const resposta = await fetch(`http://localhost:5000/reservas/${selectedReserva}/status`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/reservas/${selectedReserva}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

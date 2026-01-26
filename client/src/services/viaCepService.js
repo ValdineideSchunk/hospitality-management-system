@@ -5,7 +5,8 @@
 
 export const buscarEnderecoPorCep = async (cep) => {
   try {
-    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    const baseUrl = process.env.REACT_APP_VIACEP_URL || 'https://viacep.com.br/ws';
+    const url = `${baseUrl}/${cep}/json/`;
     const response = await fetch(url);
 
     if (!response.ok) {

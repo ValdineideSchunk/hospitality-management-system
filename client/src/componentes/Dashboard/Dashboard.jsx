@@ -32,7 +32,8 @@ const Dashboard = () => {
   const fetchData = async (year, month) => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/reservas-dashboard', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await axios.get(`${apiUrl}/reservas-dashboard`, {
         params: { year, month }
       });
 

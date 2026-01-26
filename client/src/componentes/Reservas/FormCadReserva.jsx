@@ -41,9 +41,11 @@ function FormCadReserva({ handleSubmit }) {
     setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   useEffect(() => {
     if (isEditing) {
-      fetch(`http://localhost:5000/reservas/${id}`)
+      fetch(`${apiUrl}/reservas/${id}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error(
@@ -60,7 +62,7 @@ function FormCadReserva({ handleSubmit }) {
 
           setFormData(reservaCorrigida);
 
-          fetch(`http://localhost:5000/hospedes/${data.fk_hospede}`)
+          fetch(`${apiUrl}/hospedes/${data.fk_hospede}`)
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`Erro: ${response.status} - ${response.statusText}`);
@@ -73,7 +75,7 @@ function FormCadReserva({ handleSubmit }) {
             .catch((error) => {
             });
 
-          fetch(`http://localhost:5000/acomodacoes/${data.fk_acomodacao}`)
+          fetch(`${apiUrl}/acomodacoes/${data.fk_acomodacao}`)
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`Erro: ${response.status} - ${response.statusText}`);
@@ -194,7 +196,7 @@ function FormCadReserva({ handleSubmit }) {
     }
 
     if (isEditing) {
-      fetch(`http://localhost:5000/reservas/${id}`, {
+      fetch(`${apiUrl}/reservas/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

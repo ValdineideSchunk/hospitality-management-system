@@ -12,7 +12,8 @@ function ListaAcomodacoesBloqueadas() {
   // Função para buscar acomodações bloqueadas
   const fetchAcomodacoesBloqueadas = async () => {
     try {
-      const response = await fetch('http://localhost:5000/reservas/bloqueadas'); // Endpoint do backend
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/reservas/bloqueadas`); // Endpoint do backend
       if (!response.ok) {
         throw new Error('Erro ao buscar acomodações bloqueadas');
       }
@@ -30,7 +31,8 @@ function ListaAcomodacoesBloqueadas() {
     if (!selectedId) return;
 
     try {
-      const resposta = await fetch(`http://localhost:5000/reservas/${selectedId}/status`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const resposta = await fetch(`${apiUrl}/reservas/${selectedId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
