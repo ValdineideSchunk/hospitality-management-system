@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Tab, Nav, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { txtHospede } from "../../../services/txtHospede.js";
+import { buscarEnderecoPorCep } from "../../../services/viaCepService.js";
 import "./FormCadHospedes.css";
 import FormHospede from "./FormHospedes";
 import Alertas from "../../layout/Alertas";
@@ -46,33 +47,30 @@ function FormCadHospede({ handleSubmit }) {
     setFormData({ ...formData, [name]: value });
 
     // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
-    if (name === "cep" && value.length === 8) {
-      console.log("chamou",value)
-      handleBuscarCep(value);
-      
+    if (name === "cep") {
+      // Remove formatação e verifica se tem 8 dígitos
+      const cepLimpo = value.replace(/\D/g, "");
+      if (cepLimpo.length === 8) {
+        handleBuscarCep(cepLimpo);
+      }
     }
   };
 
   // Função para buscar o endereço pelo CEP
   const handleBuscarCep = async (cep) => {
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-      const data = await response.json();
+    const resultado = await buscarEnderecoPorCep(cep);
 
-      if (!data.erro) {
-        setFormData((prevData) => ({
-          ...prevData,
-          estado: data.uf || "",
-          cidade: data.localidade || "",
-          bairro: data.bairro || "",
-          rua: data.logradouro || "",
-          complemento: data.complemento || "",
-        }));
-      } else {
-        console.error("CEP inválido");
-      }
-    } catch (error) {
-      console.error("Erro ao consultar o CEP:", error);
+    if (!resultado.erro) {
+      // Preenche os campos automaticamente
+      setFormData((prevData) => ({
+        ...prevData,
+        ...resultado.endereco,
+      }));
+      showAlert(resultado.mensagem, "success");
+    } else {
+      // Exibe mensagem de erro
+      const variante = resultado.tipo || "danger";
+      showAlert(resultado.mensagem, variante);
     }
   };
 

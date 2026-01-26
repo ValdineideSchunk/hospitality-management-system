@@ -17,12 +17,10 @@ function CadastroFuncionario() {
       
       // Verifica se a resposta foi bem-sucedida
       if (!resposta.ok) {
-        console.log('Erro ao cadastrar funcionario');
       } else {
         alert('Funcionário Cadastrado'); // Exibe um alerta confirmando o cadastro
       }
     } catch (error) {
-      console.log('Erro ao cadastrar funcionario', error); // Exibe o erro no console se a requisição falhar
     }
   }
 

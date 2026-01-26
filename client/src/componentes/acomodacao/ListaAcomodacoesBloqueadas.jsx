@@ -43,12 +43,9 @@ function ListaAcomodacoesBloqueadas() {
         throw new Error(`Erro ao atualizar status da reserva ${selectedId}: ${errorMessage}`);
       }
 
-      console.log(`Status da reserva ${selectedId} atualizado para "desbloqueada" com sucesso.`);
-
       // Recarrega a página
       fetchAcomodacoesBloqueadas();
     } catch (error) {
-      console.error(`Erro ao atualizar status da reserva ${selectedId}:`, error);
     } finally {
       setShowConfirmation(false); // Fecha o modal de confirmação
       setSelectedId(null);

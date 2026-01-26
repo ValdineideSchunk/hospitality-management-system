@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Tab, Nav, Form, Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
+import { buscarEnderecoPorCep } from '../../../services/viaCepService.js';
 import './FormCadFuncionario.css';
 import FormFuncionario from './FormFuncionario';
+import Alertas from '../../layout/Alertas';
 
 function FormCadFuncionario({ handleSubmit }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('informacoes');
+  const [alertProps, setAlertProps] = useState({
+    show: false,
+    message: '',
+    variant: 'danger',
+  });
+
+  const showAlert = (message, variant) => {
+    setAlertProps({ show: true, message, variant });
+    setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
+  };
   const [formData, setFormData] = useState({
     nome_funcionario: '',
     cpf: '',
@@ -78,7 +90,6 @@ function FormCadFuncionario({ handleSubmit }) {
           
         });
       } catch (error) {
-        console.error('Erro ao carregar os dados', error);
       }
     }
 
@@ -92,31 +103,34 @@ function FormCadFuncionario({ handleSubmit }) {
     setFormData({ ...formData, [name]: value });
 
     // Verifica se o campo alterado é o CEP e chama a função de busca de endereço
-    if (name === 'cep' && value.length === 8) {
-      handleBuscarCep(value);
+    if (name === 'cep') {
+      // Remove formatação e verifica se tem 8 dígitos
+      const cepLimpo = value.replace(/\D/g, '');
+      if (cepLimpo.length === 8) {
+        handleBuscarCep(cepLimpo);
+      }
     }
   };
 
   // Função para buscar o endereço pelo CEP
   const handleBuscarCep = async (cep) => {
-    try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
+    const resultado = await buscarEnderecoPorCep(cep);
 
-        if (!data.erro) {
-            setFormData((prevData) => ({
-                ...prevData,
-                estado: data.uf || '',
-                cidade: data.localidade || '',
-                bairro: data.bairro || '',
-                logradouro: data.logradouro || '',
-                complemento: data.complemento || '',
-            }));
-        } else {
-            console.error('CEP inválido');
-        }
-    } catch (error) {
-        console.error('Erro ao consultar o CEP:', error);
+    if (!resultado.erro) {
+      // Preenche os campos automaticamente com nomes que correspondem ao FormFuncionario
+      setFormData((prevData) => ({
+        ...prevData,
+        estado: resultado.endereco.estado || '',
+        cidade: resultado.endereco.cidade || '',
+        bairro: resultado.endereco.bairro || '',
+        logradouro: resultado.endereco.rua || '',
+        complemento: resultado.endereco.complemento || '',
+      }));
+      showAlert(resultado.mensagem, 'success');
+    } else {
+      // Exibe mensagem de erro
+      const variante = resultado.tipo || 'danger';
+      showAlert(resultado.mensagem, variante);
     }
   };
 
@@ -140,6 +154,12 @@ function FormCadFuncionario({ handleSubmit }) {
 
   return (
     <div className="container mt-4 ">
+      <Alertas
+        show={alertProps.show}
+        variant={alertProps.variant}
+        message={alertProps.message}
+        onClose={() => setAlertProps((prev) => ({ ...prev, show: false }))}
+      />
       <div className="">
         <h2 style={{ marginLeft: '50px' }}>Novo Funcionário</h2>
       </div>

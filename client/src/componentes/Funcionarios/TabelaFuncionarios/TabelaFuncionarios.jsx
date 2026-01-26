@@ -30,11 +30,9 @@ function TabelaFuncionarios() {
         throw new Error('Erro ao buscar funcionários');
       }
       const consulta = await resposta.json();
-      console.log("Dados recebidos no frontend:", consulta);
       setFuncionarios(consulta);
       setRemoveLoading(true);
     } catch (error) {
-      console.log('Erro ao buscar funcionários', error);
     }
   }
 

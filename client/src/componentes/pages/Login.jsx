@@ -70,7 +70,6 @@ function Login() {
         setAuthError("Erro inesperado: Nome do usuário não encontrado.");
       }
     } catch (error) {
-      console.error("Erro ao efetuar login:", error);
       setAuthError("CPF ou senha inválidos.");
     } finally {
       setIsLoading(false);

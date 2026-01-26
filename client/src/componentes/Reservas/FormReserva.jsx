@@ -67,7 +67,6 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   };
 
   const handleSelectAcomodacao = (fk_acomodacao) => {
-    console.log("Dados da acomodação selecionada:", fk_acomodacao);
     // Salva a capacidade no estado
     setCapacidade(fk_acomodacao.capacidade);
 
@@ -85,7 +84,7 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   // Executa quando capacidade é atualizada
   useEffect(() => {
     if (capacidade !== "") {
-      console.log("Capacidade atualizada:", capacidade);
+      // Capacidade atualizada
     }
   }, [capacidade]); // Escuta mudanças na variável `capacidade`
 
@@ -110,12 +109,9 @@ function FormReserva({ formData, setFormData, handleChange, dataInicio, dataFim,
   };
 
   useEffect(() => {
-    console.log('Data Início:', dataInicio);
-    console.log('Data Fim:', dataFim);
   }, [dataInicio, dataFim]);
 
-  useEffect(() => {
-  }, [formData]);
+
 
 
   const handleDateChange = async (e) => {

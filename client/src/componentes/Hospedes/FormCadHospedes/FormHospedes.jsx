@@ -86,6 +86,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 placeholder="Digite seu nome completo"
                 maxLength={255}
                 required
+                autoComplete="name"
                 style={inputStyle}
               />
             </div>
@@ -173,6 +174,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 }
                 onChange={handleChange}
                 required
+                autoComplete="bday"
                 style={{ width: "200px" }}
               />
             </div>
@@ -206,8 +208,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
               <Form.Control
                 type="text"
                 id="formProfissao"
-                name="Profissao"
-                value={formData.Profissao}
+                name="profissao"
+                value={formData.profissao}
                 onChange={handleChange}
                 placeholder="Digite seu profissão"
                 maxLength={255}
@@ -262,8 +264,8 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
 
                   // Permite apenas números
                   if (/^\d*$/.test(value)) {
-                    // Atualiza o valor do CEP no estado
-                    setFormData({ ...formData, cep: value });
+                    // Chama handleChange que dispara a busca de endereço pelo CEP
+                    handleChange(e);
                   } else {
                     showAlert(
                       "O campo CEP deve conter apenas números",
@@ -273,6 +275,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 }}
                 maxLength={9}
                 required
+                autoComplete="postal-code"
                 style={{ width: "180px" }}
               />
             </div>
@@ -366,6 +369,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 placeholder="Rua"
                 maxLength={255}
                 required
+                autoComplete="address-line1"
                 style={{ width: "350px" }}
               />
             </div>
@@ -458,6 +462,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 placeholder="Digite seu Email"
                 maxLength={255}
                 required
+                autoComplete="email"
                 style={{ width: "400px" }}
               />
             </div>
@@ -493,6 +498,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 placeholder="Digite seu número de celular"
                 maxLength={255}
                 required
+                autoComplete="tel"
                 style={{ width: "200px" }}
               />
             </div>

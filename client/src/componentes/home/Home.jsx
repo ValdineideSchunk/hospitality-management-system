@@ -29,15 +29,12 @@ const Home = () => {
       }
 
       const acomodacoesData = await response.json(); // Dados recebidos do backend
-      console.log('Dados das acomodações:', acomodacoesData);
-
       const dataAtual = new Date().toLocaleDateString('en-CA'); // Data atual no formato ISO
 
       // Atualizando os status das acomodações com base nas reservas e na verificação de "em limpeza"
       const acomodacoesComStatus = await Promise.all(
         acomodacoesData.map(async (acomodacao) => {
           if (acomodacao.status.toLowerCase() === 'em limpeza') {
-            console.log(`Acomodação ${acomodacao.id} está em limpeza. Ignorando reservas.`);
             return { ...acomodacao, nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
           }
 
@@ -56,7 +53,6 @@ const Home = () => {
 
             const reservaData = await reservaResponse.json();
 
-            console.log(`Dados da reserva para acomodação ${acomodacao.id}:`, reservaData);
             const status = reservaData?.status_reserva?.toLowerCase() || 'disponível';
 
             if (!['reservado', 'hospedado', 'bloqueado'].includes(status)) {
@@ -85,10 +81,8 @@ const Home = () => {
         })
       );
 
-      console.log('Acomodações com status atualizado:', acomodacoesComStatus);
       setAcomodacoes(acomodacoesComStatus); // Atualiza o estado com os dados das acomodações
     } catch (error) {
-      console.error('Erro ao buscar status das acomodações:', error);
     } finally {
       setLoading(false); // Define o carregamento como concluído
     }
@@ -115,11 +109,9 @@ const Home = () => {
         throw new Error(`Erro ao atualizar status da acomodação ${selectedAcomodacao}`);
       }
 
-      console.log(`Acomodação ${selectedAcomodacao} atualizada para o status: ${newStatus}`);
       setShowConfirmation(false);
       fetchAcomodacoesComStatus();
     } catch (error) {
-      console.error(`Erro ao atualizar status da acomodação ${selectedAcomodacao}:`, error);
     }
   };
 
@@ -140,11 +132,9 @@ const Home = () => {
         throw new Error(`Erro ao atualizar status da reserva ${selectedReserva}`);
       }
 
-      console.log(`Reserva ${selectedReserva} atualizada para o status: ${newStatus}`);
       setShowConfirmation(false);
       fetchAcomodacoesComStatus();
     } catch (error) {
-      console.error(`Erro ao atualizar status da reserva ${selectedReserva}:`, error);
     }
   };
 
@@ -283,7 +273,6 @@ const Home = () => {
                       <p className="card-text">Hóspede: {acomodacao.nomeHospede}</p>
                       <p className="card-text">Check-in: {acomodacao.dataCheckin}</p>
                       <p className="card-text">Check-out: {acomodacao.dataCheckout}</p>
-                      {console.log('Valor de pago:', acomodacao.pago)}
                       <p className="card-text">Pago: {acomodacao.pago?.trim().toLowerCase() === 'sim' ? 'Sim' : 'Não'}</p>
 
                       {acomodacao.idReserva && (

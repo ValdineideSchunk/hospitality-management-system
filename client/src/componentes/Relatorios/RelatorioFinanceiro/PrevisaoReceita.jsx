@@ -43,7 +43,6 @@ const PrevisaoReceita = () => {
             const receitaTotal = response.data.reduce((acc, curr) => acc + parseFloat(curr.receita_total), 0);
             setReceitaTotalPeriodo(receitaTotal);
         } catch (error) {
-            console.error('Erro ao buscar previsão de receita:', error);
         }
     };
 

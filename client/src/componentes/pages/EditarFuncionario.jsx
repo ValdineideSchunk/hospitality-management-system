@@ -57,10 +57,8 @@ function EditarFuncionario() {
 
         const dadosFuncionario = await resposta.json();
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
-        console.log('dodos funcionario: ',dadosFuncionario)
         setLoading(false); // Define que o carregamento foi concluído
       } catch (error) {
-        console.error('Erro ao buscar funcionário', error);
       }
     }
 
@@ -108,13 +106,11 @@ function EditarFuncionario() {
 
         if (!resposta.ok) {
           const errorData = await resposta.json();
-          console.error('Erro ao atualizar funcionário:', errorData || 'Erro desconhecido');
           throw new Error(errorData.message || 'Erro desconhecido');
         }
 
         navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
       } catch (error) {
-        console.error('Erro ao atualizar funcionário', error);
       }
     } else {
       // Muda para a próxima aba, conforme a aba atual

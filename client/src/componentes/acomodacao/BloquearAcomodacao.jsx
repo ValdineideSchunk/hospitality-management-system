@@ -87,7 +87,6 @@ function BloquearAcomodacao() {
         setMessage(`Erro ao bloquear acomodação: ${data.message}`);
       }
     } catch (error) {
-      console.error("Erro ao bloquear acomodação:", error);
       setMessage("Erro ao tentar bloquear a acomodação.");
     }
   }

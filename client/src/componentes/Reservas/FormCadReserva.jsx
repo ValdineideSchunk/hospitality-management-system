@@ -71,7 +71,6 @@ function FormCadReserva({ handleSubmit }) {
               setNomeHospede(hospedeData.nome_hospede);
             })
             .catch((error) => {
-              console.error("Erro ao buscar o hóspede:", error);
             });
 
           fetch(`http://localhost:5000/acomodacoes/${data.fk_acomodacao}`)
@@ -85,11 +84,9 @@ function FormCadReserva({ handleSubmit }) {
               setNomeAcomodacao(acomodacaoData.nome);
             })
             .catch((error) => {
-              console.error("Erro ao buscar a acomodação:", error);
             });
         })
         .catch((error) => {
-          console.error("Erro ao buscar a reserva:", error);
         });
     }
   }, [id, isEditing]);

@@ -31,7 +31,6 @@ const RelatorioOcupacao = () => {
     const [tipoGrafico, setTipoGrafico] = useState('barras'); // Estado para definir o tipo de gráfico
     const [acomodacaoSelecionada, setAcomodacaoSelecionada] = useState(''); // Estado para acomodação selecionada
     const navigate = useNavigate(); // Para navegação
-    console.log(dadosRelatorio)
     const buscarRelatorio = async () => {
         try {
             const response = await axios.get('http://localhost:5000/relatorios/ocupacao', {
@@ -40,7 +39,6 @@ const RelatorioOcupacao = () => {
             setDadosRelatorio(response.data);
             setAcomodacaoSelecionada(''); // Resetar acomodação selecionada após nova busca
         } catch (error) {
-            console.error('Erro ao buscar relatório de ocupação:', error);
         }
     };
 

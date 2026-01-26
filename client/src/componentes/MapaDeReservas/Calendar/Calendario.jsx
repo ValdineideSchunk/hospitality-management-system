@@ -80,7 +80,6 @@ const Calendario = () => {
 
         setReservations(formattedReservations);
       } catch (error) {
-        console.error("Erro ao buscar dados:", error);
       }
     };
 

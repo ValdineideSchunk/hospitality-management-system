@@ -27,11 +27,9 @@ function TabelaHospede({ exibirAcoes = true, textoBotao = "Editar", onSelectHosp
         throw new Error('Erro ao buscar Hóspedes');
       }
       const consulta = await resposta.json();
-      console.log("Dados recebidos do frontend: ", consulta);
       setHospedes(consulta);
       setRemoveLoading(true);
     } catch (error) {
-      console.log('erro ao buscar Hóspedes', error);
     }
   }
 

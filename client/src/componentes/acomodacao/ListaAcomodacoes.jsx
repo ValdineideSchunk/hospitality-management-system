@@ -21,7 +21,6 @@ const ListagemAcomodacoes = ({ textoBotao = "Editar", onSelectAcomodacao, dataIn
       const validAcomodacoes = response.data.filter(Boolean);
       setAcomodacoes(validAcomodacoes);
     } catch (error) {
-      console.error('Erro ao buscar acomodações:', error);
     }
   };
 

@@ -45,10 +45,8 @@ function EditarHospede() {
 
         const dadosHospede = await resposta.json();
         setFormData(dadosHospede); // Preenche os dados do hóspede no formulário
-
         setLoading(false);
       } catch (error) {
-        console.error('Erro ao buscar hóspede', error);
       }
     }
 
@@ -79,7 +77,6 @@ function EditarHospede() {
 
         navigate('/Tabela_Hospedes'); // Redireciona para a tabela de hóspedes após salvar
       } catch (error) {
-        console.error('Erro ao atualizar hóspede', error);
       }
     } else {
       // Muda para a próxima aba

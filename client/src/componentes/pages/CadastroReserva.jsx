@@ -18,7 +18,6 @@ function CadastroReserva() {
       });
 
       if (!resposta.ok) {
-        console.log('Erro ao cadastrar Reserva');
       } else {
         // Redireciona para a página de reservas após sucesso
         navigate("/tabela_reserva", {
@@ -26,7 +25,6 @@ function CadastroReserva() {
         });
       }
     } catch (error) {
-      console.log('Erro ao cadastrar Reserva', error);
     }
   }
 

@@ -56,7 +56,6 @@ const CadastroAcomodacao = () => {
         estacionamentoAcessivel: data.estacionamentoAcessivel || false,
       });
     } catch (error) {
-      console.error('Erro ao buscar acomodação:', error);
       alert('Erro ao carregar dados da acomodação.');
       navigate('/listagem_acomodacoes');
     }
@@ -107,7 +106,6 @@ const CadastroAcomodacao = () => {
       }
       navigate('/listagem_acomodacoes');
     } catch (error) {
-      console.error('Erro ao salvar a acomodação:', error);
       alert('Erro ao salvar a acomodação. Tente novamente.');
     }
   };

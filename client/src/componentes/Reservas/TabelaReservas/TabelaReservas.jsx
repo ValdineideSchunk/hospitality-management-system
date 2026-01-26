@@ -56,7 +56,6 @@ function TabelaReservas() {
       setReservas(consulta);
       setRemoveLoading(true);
     } catch (error) {
-      console.log('Erro ao buscar Reservas', error);
     }
   }
 
@@ -81,7 +80,6 @@ function TabelaReservas() {
       carregarReservas();
       setSelectedReserva(null);
     } catch (error) {
-      console.error(`Erro ao atualizar status da reserva ${id}:`, error);
     }
   };
 

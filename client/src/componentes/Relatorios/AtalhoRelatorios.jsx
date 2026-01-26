@@ -65,7 +65,6 @@ const AtalhoRelatorios = () => {
                     ],
                 });
             } catch (error) {
-                console.error('Erro ao buscar a previsão de ocupação:', error);
             }
         };
 
@@ -78,7 +77,6 @@ const AtalhoRelatorios = () => {
                 });
         
                 const data = response.data;
-                console.log('Retorno da API receita confirmada:', data);
         
                 const labels = data.map(item => item.nome_acomodacao); // Atualizado
                 const receitas = data.map(item => parseFloat(item.receita_total)); // Atualizado
@@ -96,7 +94,6 @@ const AtalhoRelatorios = () => {
                     ],
                 });
             } catch (error) {
-                console.error('Erro ao buscar a receita confirmada:', error);
             }
         };
         
@@ -113,8 +110,6 @@ const AtalhoRelatorios = () => {
                 const labels = data.map(item => item.nome_acomodacao);
                 const receitas = data.map(item => parseFloat(item.receita_total));
 
-                console.log('Dados para Previsão de Receita:', data);
-
                 setPrevisaoReceita({
                     labels,
                     datasets: [
@@ -128,7 +123,6 @@ const AtalhoRelatorios = () => {
                     ],
                 });
             } catch (error) {
-                console.error('Erro ao buscar a previsão de receita:', error);
             }
         };
 

@@ -15,14 +15,11 @@ function CadastroHospede() {
         body: JSON.stringify(infoHospede),
       });
       // Verifica se a resposta da requisição foi bem-sucedida
-      if (!resposta.ok) {
-        console.log('Erro ao cadastrar Hóspede'); // Log em caso de erro
-        console.log('Erro aqui'); 
+      if (!resposta.ok) { 
       } else {
         alert('Hóspede Cadastrado'); // Confirmação para o usuário em caso de sucesso
       }
     } catch (error) {
-      console.log('Erro ao cadastrar Hóspede', error); // Log de erro no caso de exceção
     }
   }
 

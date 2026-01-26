@@ -67,8 +67,7 @@ function EditarFuncionario() {
   
         const dadosFuncionario = await resposta.json();
   
-        // Log para depuração
-        console.log('Dados do funcionário:', dadosFuncionario);
+
   
         // Formatar as datas recebidas, mas apenas se a data existir
         dadosFuncionario.data_nascimento = formatDateToInput(dadosFuncionario.data_nascimento);
@@ -76,10 +75,8 @@ function EditarFuncionario() {
         dadosFuncionario.adicionais.data_emissao_carteira = formatDateToInput(dadosFuncionario.adicionais.data_emissao_carteira);
   
         setFormData(dadosFuncionario); // Preenche os dados do funcionário no formulário
-        console.log('Dados após formatação:', dadosFuncionario);
         setLoading(false); // Define que o carregamento foi concluído
       } catch (error) {
-        console.error('Erro ao buscar funcionário', error);
       }
     }
   
@@ -128,13 +125,11 @@ function EditarFuncionario() {
 
         if (!resposta.ok) {
           const errorData = await resposta.json();
-          console.error('Erro ao atualizar funcionário:', errorData || 'Erro desconhecido');
           throw new Error(errorData.message || 'Erro desconhecido');
         }
 
         navigate('/Tabela_Funcionarios'); // Redireciona para a tabela de funcionários após salvar
       } catch (error) {
-        console.error('Erro ao atualizar funcionário', error);
       }
     } else {
       // Muda para a próxima aba, conforme a aba atual
