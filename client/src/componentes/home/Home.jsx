@@ -45,6 +45,7 @@ const Home = () => {
               `${apiUrl}/status/${acomodacao.id}?data=${dataAtual}`
             );
 
+            // 404 significa nenhuma reserva na data; não é erro
             if (reservaResponse.status === 404) {
               return { ...acomodacao, status: 'disponível', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
             }
@@ -77,7 +78,7 @@ const Home = () => {
               pago,
             };
           } catch (error) {
-            console.error(`Erro na acomodação ${acomodacao.id}:`, error);
+            console.debug(`Aviso na acomodação ${acomodacao.id}:`, error?.message || error);
             return { ...acomodacao, status: 'indefinido', nomeHospede: '-', dataCheckin: '-', dataCheckout: '-', idReserva: null };
           }
         })

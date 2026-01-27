@@ -280,7 +280,15 @@ export async function buscarStatusReservaPorData(acomodacaoId, dataAtual) {
     if (retorno.length > 0) {
       return [200, retorno[0]]; // Retorna o status, nome do hóspede e datas
     } else {
-      return [404, { mensagem: 'Nenhuma reserva encontrada para a data especificada.' }];
+      // Em vez de 404, retorna 200 com status "disponível" para evitar erros no frontend
+      return [200, {
+        status_reserva: 'disponível',
+        nome_hospede: '-',
+        data_checkin: null,
+        data_checkout: null,
+        id_reserva: null,
+        pago: null
+      }];
     }
   } catch (error) {
     console.error('Erro ao buscar status da reserva:', error);

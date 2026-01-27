@@ -109,7 +109,7 @@ function MenuLateral() {
               <FontAwesomeIcon
                 icon={faCalendar}
                 style={{
-                  fontSize: "25px",
+                  fontSize: "32px",
                   color: "#ffffff",
                   paddingRight: "12px",
                 }}
@@ -155,23 +155,22 @@ function MenuLateral() {
           {/* Link para ajustes, visível apenas para administradores */}
           {userCargo === "administrador" && (
             <li className="nav-item side-item w-100">
-              <button
+              <Link
+                to="#"
                 className="nav-link text-white d-flex align-items-center justify-content-start w-100"
-                title="Recursos do Administrador "
-                onClick={() => setMostrarAjustes(true)}
+                title="Recursos do Administrador"
+                onClick={(e) => { e.preventDefault(); setMostrarAjustes(true); }}
               >
                 <FontAwesomeIcon
                   icon={faGear}
                   style={{
-                    fontSize: "25px",
+                    fontSize: "32px",
                     color: "#ffffff",
                     paddingRight: "12px",
                   }}
                 />
-                <span className="item-description text-white">
-                  Administrador
-                </span>
-              </button>
+                <span className="item-description text-white">Admin</span>
+              </Link>
             </li>
           )}
 
