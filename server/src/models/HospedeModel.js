@@ -157,3 +157,27 @@ export async function deleteHospede(id) {
     return [500, { message: 'Erro ao deletar hóspede', error }];
   }
 }
+
+// Função para verificar se um CPF já existe no banco de dados
+export async function verificarCPF(cpf) {
+  console.log('HospedeModel: verificarCPF');
+  const conexao = mysql.createPool(db);
+  const sql = 'SELECT id_hospede, nome_hospede FROM hospedes WHERE cpf = ?';
+  const params = [cpf];
+
+  try {
+    const [retorno] = await conexao.query(sql, params);
+    console.log('Verificando CPF');
+    
+    if (retorno.length > 0) {
+      // CPF encontrado - hospede já existe
+      return [200, { existe: true, hospede: retorno[0] }];
+    }
+    
+    // CPF não encontrado
+    return [200, { existe: false }];
+  } catch (error) {
+    console.log(error);
+    return [500, { message: 'Erro ao verificar CPF', error }];
+  }
+}

@@ -4,7 +4,7 @@ import cors from 'cors';
 import { cadastroAcomodacao, mostrandoAcomodacoes, atualizandoAcomodacao, excluindoAcomodacao, 
 mostrandoAcomodacaoPorId, mostrandoAcomodacoesDisponiveis, bloquearAcomodacao, 
 verificarConflitoReservas} from './controllers/acomodacoesController.js'; 
-import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede } from './controllers/HospedeController.js'; 
+import { cadastroHospede, atualizandoHospede, excluindoHospede, mostrandoHospedes, mostrandoUmHospede, verificandoCPF } from './controllers/HospedeController.js'; 
 import { cadastroFuncionario, mostrandoFuncionarios, atualizandoFuncionario, mostrandoUmFuncionario } from './controllers/FuncionarioController.js'; 
 import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoReserva,
    alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva, 
@@ -31,6 +31,7 @@ app.get('/hospede', mostrandoHospedes);
 app.get('/hospedes/:id', mostrandoUmHospede)
 app.put('/hospedes/:id', atualizandoHospede);
 app.delete('/hospede/:id', excluindoHospede);
+app.get('/verificar-cpf/:cpf', verificandoCPF);
 
 // Rotas de CRUD de funcionário
 app.post('/funcionario', cadastroFuncionario);

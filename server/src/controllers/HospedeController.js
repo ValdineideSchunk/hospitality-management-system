@@ -4,6 +4,7 @@ import {
   deleteHospede,
   readHospedes,
   getOneHospede,
+  verificarCPF,
 } from '../models/HospedeModel.js';
 
 export async function cadastroHospede(req, res) {
@@ -70,5 +71,18 @@ export async function excluindoHospede(req, res) {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Erro ao excluir o hóspede', error });
+  }
+}
+
+export async function verificandoCPF(req, res) {
+  console.log('HospedeController verificandoCPF');
+  const { cpf } = req.params;
+
+  try {
+    const [status, resposta] = await verificarCPF(cpf);
+    res.status(status).json(resposta);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Erro ao verificar CPF', error });
   }
 }

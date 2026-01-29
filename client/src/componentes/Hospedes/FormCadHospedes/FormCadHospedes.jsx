@@ -4,6 +4,7 @@ import { Tab, Nav, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { txtHospede } from "../../../services/txtHospede.js";
 import { buscarEnderecoPorCep } from "../../../services/viaCepService.js";
+import { validarCPF, verificarCPFBancoDados } from "../../../utils/validacoes.js";
 import "./FormCadHospedes.css";
 import FormHospede from "./FormHospedes";
 import Alertas from "../../layout/Alertas";
@@ -11,6 +12,7 @@ import Alertas from "../../layout/Alertas";
 function FormCadHospede({ handleSubmit }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("informacoes");
+  const [cpfValido, setCpfValido] = useState(false);
   const [formData, setFormData] = useState({
     nome_hospede: "",
     cpf: "",
@@ -42,6 +44,31 @@ function FormCadHospede({ handleSubmit }) {
     setTimeout(() => setAlertProps((prev) => ({ ...prev, show: false })), 5000);
   };
 
+  const handleTabChange = async (newTab) => {
+    // Se quer ir para endereco e está em informacoes, valida o CPF
+    if (activeTab === "informacoes" && newTab !== "informacoes") {
+      if (!formData.cpf || formData.cpf.trim() === "") {
+        showAlert("Informe o CPF antes de prosseguir.", "warning");
+        return;
+      }
+
+      if (!validarCPF(formData.cpf)) {
+        showAlert("Por favor, digite um CPF válido antes de prosseguir.", "warning");
+        return;
+      }
+      
+      // Verifica se o CPF não está duplicado
+      const resultado = await verificarCPFBancoDados(formData.cpf);
+      if (resultado.existe) {
+        showAlert("CPF já cadastrado no sistema. Verifique os dados do hóspede.", "danger");
+        return;
+      }
+      
+      setCpfValido(true);
+    }
+    
+    setActiveTab(newTab);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -74,7 +101,7 @@ function FormCadHospede({ handleSubmit }) {
     }
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
   e.preventDefault();
 
   // Validação dos campos obrigatórios antes de continuar para a próxima aba
@@ -85,7 +112,18 @@ function FormCadHospede({ handleSubmit }) {
     }
 
     if (!formData.cpf || formData.cpf.trim() === "") {
-      showAlert("O campo CPF é obrigatório e deve ser válido.", "danger");
+      showAlert("Informe o CPF antes de prosseguir.", "danger");
+      return false;
+    }
+
+    if (!validarCPF(formData.cpf)) {
+      showAlert("Por favor, digite um CPF válido antes de prosseguir.", "danger");
+      return false;
+    }
+
+    const resultadoCpf = await verificarCPFBancoDados(formData.cpf);
+    if (resultadoCpf.existe) {
+      showAlert("CPF já cadastrado no sistema. Verifique os dados do hóspede.", "danger");
       return false;
     }
 
@@ -177,7 +215,7 @@ function FormCadHospede({ handleSubmit }) {
       <Tab.Container
         id="left-tabs-example"
         activeKey={activeTab}
-        onSelect={setActiveTab}
+        onSelect={handleTabChange}
       >
         <Nav variant="tabs">
           <Nav.Item>

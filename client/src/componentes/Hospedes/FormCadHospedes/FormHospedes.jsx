@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Tab } from "react-bootstrap";
 import Alertas from "../../layout/Alertas";
+import { validarCPF, validarFormatoCEP, validarCEPAPI, verificarCPFBancoDados } from "../../../utils/validacoes";
 
 function FormHospede({ setFormData, formData, handleChange, submit }) {
   const formGroupStyle = {
@@ -28,23 +29,23 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
 
   const inputStyle = { width: "400px" };
 
-  const validarCPF = (cpf) => {
-    cpf = cpf.replace(/\D/g, "");
-    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Valida CPF antes de enviar
+    if (formData.cpf && !validarCPF(formData.cpf)) {
+      showAlert("O CPF informado é inválido. Corrija antes de prosseguir.", "danger");
+      return;
+    }
 
-    const calcularDigito = (baseCpf, pesoInicial) => {
-      let soma = 0;
-      for (let i = 0; i < baseCpf.length; i++) {
-        soma += parseInt(baseCpf[i]) * (pesoInicial - i);
-      }
-      const resto = soma % 11;
-      return resto < 2 ? 0 : 11 - resto;
-    };
-
-    const digito1 = calcularDigito(cpf.slice(0, 9), 10);
-    const digito2 = calcularDigito(cpf.slice(0, 10), 11);
-
-    return digito1 === parseInt(cpf[9]) && digito2 === parseInt(cpf[10]);
+    // Valida CEP antes de enviar
+    if (formData.cep && !validarFormatoCEP(formData.cep)) {
+      showAlert("O CEP deve conter 8 dígitos. Corrija antes de prosseguir.", "danger");
+      return;
+    }
+    
+    // Chama a função submit original
+    submit(e);
   };
 
   return (
@@ -57,7 +58,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
       />
       <Tab.Pane eventKey="informacoes">
         <Form
-          onSubmit={submit}
+          onSubmit={handleSubmit}
           className="border rounded pt-3"
           style={{ textAlign: "left" }}
         >
@@ -101,17 +102,27 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                 id="formCpf"
                 name="cpf"
                 value={formData.cpf}
-                onChange={(e) => {
+                onChange={async (e) => {
                   const value = e.target.value;
 
                   // Permite apenas números
                   if (/^\d*$/.test(value)) {
                     // Atualiza o valor do CPF no estado
-                    setFormData({ ...formData, cpf: value });
+                    handleChange(e);
 
                     // Valida o CPF se o valor tiver 11 dígitos
-                    if (value.length === 11 && !validarCPF(value)) {
-                      showAlert("O CPF informado é inválido.", "danger");
+                    if (value.length === 11) {
+                      if (!validarCPF(value)) {
+                        showAlert("O CPF informado é inválido.", "danger");
+                      } else {
+                        // Se o CPF é válido, verifica se já está cadastrado
+                        const resultado = await verificarCPFBancoDados(value);
+                        if (resultado.existe) {
+                          showAlert(resultado.mensagem, "warning");
+                        } else if (resultado.erro) {
+                          showAlert(resultado.mensagem, "danger");
+                        }
+                      }
                     }
                   } else {
                     showAlert(
@@ -264,7 +275,7 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
 
                   // Permite apenas números
                   if (/^\d*$/.test(value)) {
-                    // Chama handleChange que dispara a busca de endereço pelo CEP
+                    // Atualiza o valor do CEP - handleChange vai chamar handleBuscarCep
                     handleChange(e);
                   } else {
                     showAlert(
@@ -273,10 +284,11 @@ function FormHospede({ setFormData, formData, handleChange, submit }) {
                     );
                   }
                 }}
-                maxLength={9}
+                placeholder="Digite seu CEP (8 dígitos)"
+                maxLength={8}
                 required
                 autoComplete="postal-code"
-                style={{ width: "180px" }}
+                style={{ width: "220px" }}
               />
             </div>
 
