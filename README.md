@@ -1,105 +1,134 @@
-# Sistema de Gerenciamento de Hospedagens - Pousada Quinta do Ypuã
+# Hospitality Management System
 
-## Visão Geral
+Um sistema web completo para gerenciamento de hospedagem, automatizando reservas, hóspedes, acomodações e relatórios financeiros.
 
-A Pousada Quinta do Ypuã enfrenta desafios na gestão de hospedagens e clientes devido à falta de um sistema centralizado. Atualmente, a gestão é realizada manualmente e através de planilhas, resultando em erros de agendamento, duplicações de reservas e perda de informações. Este projeto visa desenvolver um Sistema de Gerenciamento de Hospedagens baseado na web para resolver esses problemas.
+## O Sistema
 
-## Objetivo
+O sistema substitui planilhas manuais por uma plataforma integrada que centraliza:
+- Cadastro e gestão de hóspedes com validações robustas
+- Sistema completo de reservas com verificação de conflitos
+- Controle de acomodações e disponibilidade
+- Relatórios financeiros em tempo real
+- Gestão de funcionários com autenticação segura
 
-Desenvolver um sistema web que substitua os processos manuais e as planilhas ineficientes, proporcionando:
+## Stack Tecnológico
 
-- **Redução de Erros:** Minimizar erros humanos comuns em processos manuais.
-- **Eficiência Operacional:** Automatizar tarefas repetitivas e demoradas.
-- **Melhoria da Experiência do Cliente:** Garantir uma gestão eficiente das reservas e comunicação clara com os hóspedes.
-- **Centralização de Informações:** Reunir todas as informações em um único sistema.
-- **Controle Financeiro:** Melhorar o controle financeiro com recursos para acompanhamento de pagamentos e faturamento.
+### Frontend
+- **React** 18.3 + React Router 6.26
+- **Bootstrap 5** + React Bootstrap
+- **Chart.js** para gráficos de relatórios
+- **Axios** para consumir API REST
 
-## Tecnologias Utilizadas
+### Backend  
+- **Node.js + Express** 4.21 (API REST)
+- **MySQL2** com pool de conexões
+- **Bcrypt** para criptografia de senhas
+- **Express Validator** para validação de dados
 
-- **Linguagens de Programação:** Java (para desenvolvimento inicial), JavaScript (para desenvolvimento web)
-- **Frameworks e Bibliotecas:**
-  - **Frontend:** React (para a construção da interface de usuário)
-  - **Backend:** Node.js (para a construção do servidor e lógica de backend)
-- **Banco de Dados:** MySQL / MariaDB
-- **Ferramenta de Prototipagem:** Figma (para design e prototipagem não funcional)
-- **Ambiente de Desenvolvimento:** NetBeans (para prototipagem funcional)
-- **Controle de Versão:** Git
+### Banco de Dados
+- **MySQL / MariaDB**
 
-## Funcionalidades Principais
+## Principais Funcionalidades
 
-### Requisitos Funcionais
+✅ **Cadastro de Hóspedes**
+- Validação de CPF com detecção de duplicidade
+- Integração ViaCEP para preenchimento automático de endereço
+- Bloqueio de avanço com CPF inválido ou duplicado
 
-- **Cadastro de Hóspedes [RF 001]:** Registro e gerenciamento de perfis de hóspedes.
-- **Gerenciamento de Reservas [RF 2]:** Criação, visualização, edição e cancelamento de reservas.
-- **Atualização do Status de Limpeza [RF 3]:** Atualização automática e manual do status das acomodações.
-- **Gerenciamento de Acomodações [RF 6]:** Cadastro e manutenção de informações sobre acomodações.
-- **Monitoramento das Acomodações [RF 7]:** Controle do status das acomodações (disponível, ocupado, em limpeza, etc.).
-- **Perfil de Funcionários [RF 8]:** Criação e gerenciamento de perfis de funcionários com informações pessoais e profissionais.
-- **Autenticação de Funcionários [RF 11]:** Controle de acesso baseado em credenciais.
-- **Histórico de Hospedagens [RF 12]:** Registro das estadias anteriores dos hóspedes.
-- **Gestão de Convidados [RF 13]:** Registro de acompanhantes ou convidados adicionais.
-- **Gestão de Lista de Espera [RF 14]:** Gerenciamento de lista de espera para acomodações.
-- **Acesso Remoto [RF 15]:** Acesso ao sistema de qualquer local com conexão à internet.
-- **Responsividade [RF 16]:** Interface adaptativa para diferentes tamanhos de tela e dispositivos.
-- **Compatibilidade com Navegadores [RF 17]:** Suporte aos principais navegadores web.
-- **Integração com Serviços Web [RF 19]:** Conexão com APIs externas para pagamentos online, envio de e-mails, etc.
+✅ **Sistema de Reservas**
+- Criação, edição e cancelamento de reservas
+- Verificação automática de conflitos
+- Mapa visual de reservas por período
+- Validação de datas e disponibilidade
 
-### Requisitos Não Funcionais
+✅ **Gerenciamento de Acomodações**
+- Cadastro com informações completas
+- Status em tempo real (disponível, ocupado, limpeza, bloqueado)
+- Bloqueio de períodos para manutenção
 
-- **Gerenciamento de Relatórios [RNF 1]:** Geração de relatórios detalhados sobre ocupação e receita.
-- **Segurança de Informações dos Hóspedes [RNF 2]:** Proteção dos dados dos hóspedes com criptografia e medidas de segurança.
-- **Agilidade e Eficiência [RNF 3]:** Desempenho rápido e responsivo.
-- **Confiabilidade do Sistema [RNF 4]:** Alta disponibilidade e minimização do tempo de inatividade.
-- **Escalabilidade [RNF 5]:** Capacidade de crescer conforme o aumento das reservas e hóspedes.
-- **Manutenção [RNF 6]:** Facilidade para manutenção e atualização do sistema.
-- **Verificação Automática [RNF 7]:** Funcionalidades para evitar reservas duplicadas.
-- **Interface Intuitiva [RNF 8]:** Design fácil de usar e entender.
-- **Gestão de Recursos [RNF 11]:** Controle de recursos do hotel, como roupas de cama e produtos de limpeza.
-- **Segurança da Web [RNF 14]:** Implementação de HTTPS, proteção contra CSRF e validação de entradas.
-- **Backup e Recuperação [RNF 15]:** Mecanismos para backup e recuperação de dados.
-- **Performance e Escalabilidade na Web [RNF 16]:** Suporte a acessos simultâneos e desempenho adequado.
-- **Suporte a Navegadores Móveis [RNF 17]:** Navegação otimizada para dispositivos móveis.
+✅ **Relatórios Financeiros**
+- Relatório de receita e ocupação
+- Previsão de ganhos
+- Gráficos interativos
 
-## Instalação
+✅ **Gestão de Funcionários**
+- Cadastro com dados profissionais
+- Autenticação com criptografia BCrypt
+- Controle de acesso
 
-Para instalar e configurar o sistema localmente:
+## Como Rodar
 
-1. Clone o repositório:
-   ```sh
-   git clone https://github.com/usuario/repo.git
-   ```
+### Pré-requisitos
+- Node.js 16+
+- MySQL/MariaDB rodando
 
-2. Navegue até o diretório do projeto:
-   ```sh
-   cd repo
-   ```
+### Instalação
 
-3. Instale as dependências:
-   ```sh
-   npm install
-   ```
+```bash
+# Clonar repositório
+git clone https://github.com/usuario/ProjetoHospedaFacil2026.git
+cd ProjetoHospedaFacil2026
 
-4. Configure o ambiente (veja o arquivo `.env.example` para variáveis necessárias).
+# Configurar servidor
+cd server
+npm install
 
-5. Inicie o servidor:
-   ```sh
-   npm start
-   ```
+# Criar .env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=seu_senha
+DB_NAME=hospedafacil
 
-## Contribuição
+# Iniciar servidor
+npm start
 
-Contribuições são bem-vindas! Para contribuir com o projeto, siga estas etapas:
+# Em outro terminal - Configurar cliente
+cd client
+npm install
+npm start
+# Acesso em http://localhost:3000
+```
 
-1. Faça um fork do repositório.
-2. Crie uma nova branch (`git checkout -b feature/nova-funcionalidade`).
-3. Faça suas alterações e adicione commits (`git commit -am 'Adiciona nova funcionalidade'`).
-4. Envie suas alterações para o repositório remoto (`git push origin feature/nova-funcionalidade`).
-5. Abra um pull request.
+## Endpoints Principais
+
+| Recurso | Método | Rota |
+|---------|--------|------|
+| Listar hóspedes | GET | `/hospede` |
+| Cadastrar hóspede | POST | `/hospede` |
+| Verificar CPF | GET | `/verificar-cpf/:cpf` |
+| Listar reservas | GET | `/reservas` |
+| Criar reserva | POST | `/reservas` |
+| Relatório financeiro | GET | `/relatorios/financeiro` |
+
+## Estrutura do Projeto
+
+```
+├── client/                    # React + componentes
+│   ├── componentes/          # Hóspedes, Reservas, Acomodações, Relatórios
+│   ├── services/             # ViaCEP, API
+│   └── utils/                # Validações (CPF, CEP)
+│
+└── server/                    # Express + Node.js
+    ├── controllers/          # Lógica de negócio
+    ├── models/               # Acesso ao banco
+    └── validations/          # Validação de entrada
+```
+
+## Tecnologias em Destaque
+
+- ✨ Validações robustas (CPF com algoritmo de dígito verificador)
+- 🔒 Segurança (BCrypt, validação em frontend e backend)
+- 📡 Integração ViaCEP para dados de endereço
+- 📊 Relatórios com Chart.js
+- 🎨 Interface responsiva com Bootstrap
+- ⚡ Async/await no backend para performance
+
+## Autores
+
+- [Valdineide Schunk](https://www.linkedin.com/in/valdineide-schunk)
+- [Vitor Casotti](https://www.linkedin.com/in/vitor-casotti-667a14285)
+- [Mateus Barboza](https://www.linkedin.com/in/mateus-barboza-santana)
 
 ## Licença
 
-Este projeto está licenciado sob a [Licença MIT](LICENSE).  
-
-## Contato
-
-Para mais informações ou dúvidas, entre em contato com Linkedins: Valdineide Schunk: www.linkedin.com/in/valdineide-schunk, Vitor Casotti:www.linkedin.com/in/vitor-casotti-667a14285, Mateus Barboza: www.linkedin.com/in/mateus-barboza-santana.
+MIT
