@@ -8,19 +8,24 @@ import {
   Col,
   Spinner,
 } from "react-bootstrap";
-import { motion } from "framer-motion"; // Importa o Framer Motion
-import logo from "../../img/HF-Logo2.png"; // Atualize para a logo azul.
+import { motion } from "framer-motion";
+import logo from "../../img/HF-Logo2.png";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Login() {
   const [formData, setFormData] = useState({ login: "", senha: "" });
   const [errors, setErrors] = useState({ login: "", senha: "" });
   const [authError, setAuthError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { login: fazerLogin } = useAuth();
 
   const validateField = (name, value) => {
     let errorMsg = "";
-    if (!/^\d{11}$/.test(value)) {
+    if (name === 'login' && !/^\d{11}$/.test(value)) {
       errorMsg = "O campo deve conter exatamente 11 dígitos (CPF).";
+    }
+    if (name === 'senha' && value.length < 4) {
+      errorMsg = "A senha deve ter no mínimo 4 caracteres.";
     }
     setErrors((prevErrors) => ({ ...prevErrors, [name]: errorMsg }));
   };
@@ -28,8 +33,8 @@ function Login() {
   const validateForm = () => {
     const { login, senha } = formData;
     return (
-      login === senha &&
       /^\d{11}$/.test(login) &&
+      senha.length >= 4 &&
       !errors.login &&
       !errors.senha
     );
@@ -50,7 +55,10 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cpf: formData.login }),
+        body: JSON.stringify({ 
+          cpf: formData.login,
+          senha: formData.senha 
+        }),
       });
 
       if (!resposta.ok) {
@@ -60,18 +68,16 @@ function Login() {
 
       const data = await resposta.json();
 
-      if (data && data.nome_funcionario) {
-        localStorage.setItem("userId", data.id_funcionario);
-        localStorage.setItem("userName", data.nome_funcionario);
-        localStorage.setItem("userCargo", data.cargo);
-        localStorage.setItem("userCPF", formData.login);
+      if (data && data.token && data.usuario) {
+        // Usar o contexto de autenticação para salvar token e dados
+        fazerLogin(data.token, data.usuario);
         setAuthError("");
         window.location.href = "/home";
       } else {
-        setAuthError("Erro inesperado: Nome do usuário não encontrado.");
+        setAuthError("Erro inesperado: Dados de autenticação inválidos.");
       }
     } catch (error) {
-      setAuthError("CPF ou senha inválidos.");
+      setAuthError(error.message || "CPF ou senha inválidos.");
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +88,7 @@ function Login() {
     if (validateForm()) {
       efetuarLogin();
     } else {
-      setAuthError("Login e senha devem ser válidos.");
+      setAuthError("CPF e senha devem ser válidos.");
     }
   };
 

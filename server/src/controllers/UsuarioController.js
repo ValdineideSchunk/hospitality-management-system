@@ -5,34 +5,36 @@ import {
   updateUsuario,
   deleteUsuario,
   getUserByLoginPassword,
+  getUserByCPFWithPassword,
 } from "../models/usuarioModel.js";
+import { gerarToken } from "../middlewares/authMiddleware.js";
 
 export async function criarUsuario(req, res) {
   console.log("UsuarioController :: criarUsuario");
 
-  const { cpf } = req.body;
+  const { id_funcionario, senha } = req.body;
 
-  // Validar se o CPF foi informado
-  if (!cpf) {
-    return res.status(400).json({ message: "CPF deve ser informado" });
+  // Validar se os dados foram informados
+  if (!id_funcionario || !senha) {
+    return res.status(400).json({ 
+      message: "ID do funcionário e senha devem ser informados" 
+    });
+  }
+
+  // Validar tamanho mínimo da senha
+  if (senha.length < 4) {
+    return res.status(400).json({ 
+      message: "A senha deve ter no mínimo 4 caracteres" 
+    });
   }
 
   try {
-    // Verificar se o funcionário existe
-    const [status, resposta] = await getUserByLoginPassword(cpf);
-
-    if (status === 200) {
-      return res.status(200).json({
-        message: "Usuário autenticado com sucesso",
-        dados: resposta,
-      });
-    } else {
-      return res.status(status).json(resposta);
-    }
+    const [status, resposta] = await createUsuario(id_funcionario, senha);
+    return res.status(status).json(resposta);
   } catch (error) {
-    console.error("Erro ao autenticar usuário:", error);
+    console.error("Erro ao criar usuário:", error);
     return res.status(500).json({
-      message: "Erro ao autenticar usuário",
+      message: "Erro ao criar usuário",
       details: error.message,
     });
   }
@@ -91,18 +93,39 @@ export async function atualizarUsuario(req, res) {
 export async function logarUsuario(req, res) {
   console.log("UsuarioController :: logarUsuario");
 
-  const { cpf } = req.body;
+  const { cpf, senha } = req.body;
 
-  // Verifica se o CPF foi informado
-  if (!cpf) {
-    return res.status(400).json({ message: "CPF deve ser informado" });
+  // Verifica se o CPF e senha foram informados
+  if (!cpf || !senha) {
+    return res.status(400).json({ message: "CPF e senha devem ser informados" });
   }
 
   try {
-    // Chama a função para autenticar o usuário
-    const [status, resposta] = await getUserByLoginPassword(cpf);
+    // Chama a função para autenticar o usuário com validação de senha
+    const [status, resposta] = await getUserByCPFWithPassword(cpf, senha);
 
-    return res.status(status).json(resposta);
+    if (status === 200) {
+      // Gera o token JWT
+      const token = gerarToken({
+        id_funcionario: resposta.id_funcionario,
+        cpf: resposta.cpf,
+        cargo: resposta.cargo,
+        nome_funcionario: resposta.nome_funcionario
+      });
+
+      // Retorna o token e dados básicos do usuário
+      return res.status(200).json({
+        message: "Login realizado com sucesso",
+        token,
+        usuario: {
+          id_funcionario: resposta.id_funcionario,
+          nome_funcionario: resposta.nome_funcionario,
+          cargo: resposta.cargo
+        }
+      });
+    } else {
+      return res.status(status).json(resposta);
+    }
   } catch (error) {
     console.log("Erro ao realizar login:", error);
     return res.status(500).json({ message: "Erro ao realizar login", details: error.message });

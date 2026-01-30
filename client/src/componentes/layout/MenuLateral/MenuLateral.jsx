@@ -15,24 +15,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import AtalhoRelatorios from "../../Relatorios/AtalhoRelatorios";
+import { useAuth } from "../../../contexts/AuthContext";
 
 function MenuLateral() {
   const [isOpen, setIsOpen] = useState(false);
-  const [userName, setUserName] = useState("Usuário");
-  const [userCargo, setUserCargo] = useState("");
   const [mostrarAjustes, setMostrarAjustes] = useState(false);
   const [mostrarModalSair, setMostrarModalSair] = useState(false);
+  const { usuario, logout } = useAuth();
 
   useEffect(() => {
-    const storedUserName = localStorage.getItem("userName");
-    const storedUserCargo = localStorage.getItem("userCargo");
-
-    if (storedUserName) {
-      setUserName(storedUserName);
-    }
-    if (storedUserCargo) {
-      setUserCargo(storedUserCargo);
-    }
+    // Dados agora vêm do contexto de autenticação
   }, []);
 
   const toggleMenu = () => {
@@ -40,7 +32,7 @@ function MenuLateral() {
   };
 
   const handleLogout = () => {
-    window.location.href = "/login";
+    logout();
   };
 
   return (
@@ -60,7 +52,7 @@ function MenuLateral() {
         <div
           id="user"
           className="d-flex align-items-center justify-content-start text-center mb-5 mt-3 ms-3"
-          title={userName}
+          title={usuario?.nome_funcionario || "Usuário"}
         >
           <FontAwesomeIcon
             icon={faUser}
@@ -74,7 +66,7 @@ function MenuLateral() {
               className="item-description text-white ms-0"
               style={{ fontSize: "12px" }}
             >
-              {userName}
+              {usuario?.nome_funcionario || "Usuário"}
             </span>
           </div>
         </div>
@@ -153,7 +145,7 @@ function MenuLateral() {
           </li>
 
           {/* Link para ajustes, visível apenas para administradores */}
-          {userCargo === "administrador" && (
+          {(usuario?.cargo || "").toLowerCase() === "administrador" && (
             <li className="nav-item side-item w-100">
               <Link
                 to="#"
@@ -250,6 +242,17 @@ function MenuLateral() {
                     onClick={() => setMostrarAjustes(false)}
                   >
                     Tabela Funcionários
+                  </Button>
+                </Link>
+              </Col>
+              <Col md={12} className="mb-3">
+                <Link to="/cadastro_usuario">
+                  <Button
+                    variant="success"
+                    className="w-100"
+                    onClick={() => setMostrarAjustes(false)}
+                  >
+                    🔐 Criar Usuário do Sistema
                   </Button>
                 </Link>
               </Col>

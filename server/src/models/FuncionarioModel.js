@@ -4,6 +4,21 @@ import mysql from 'mysql2/promise';
 //importando configurações do banco
 import db from '../conexao.js';
 
+function normalizarCargo(cargo) {
+    if (typeof cargo !== 'string') {
+        return cargo;
+    }
+
+    const cargoNormalizado = cargo.trim().toLowerCase();
+    const cargos = {
+        administrador: 'Administrador',
+        recepcionista: 'Recepcionista',
+        camareira: 'Camareira',
+    };
+
+    return cargos[cargoNormalizado] || cargo.trim();
+}
+
 // Cadastrando Funcionario
 export async function createFuncionario(funcionario) {
     const conexao = mysql.createPool(db);
@@ -35,7 +50,7 @@ export async function createFuncionario(funcionario) {
         funcionario.numero,
         funcionario.complemento,
         funcionario.observacoesEndereco,
-        funcionario.cargo,
+        normalizarCargo(funcionario.cargo),
         funcionario.dataAdmissao,
         funcionario.dataEmissaoCarteira,
         funcionario.banco,
@@ -152,7 +167,7 @@ export async function updateFuncionario(funcionario, id) {
             WHERE id_funcionario = ?`;
   
     // Array de parâmetros corrigido
-    const params = [
+        const params = [
       funcionario.nome_funcionario,
       funcionario.rg,
       funcionario.cpf,
@@ -168,8 +183,8 @@ export async function updateFuncionario(funcionario, id) {
       funcionario.logradouro,
       funcionario.numero,
       funcionario.complemento,
-      funcionario.observacoes_endereco, // Corrigido para usar o nome correto
-      funcionario.cargo,
+    funcionario.observacoes_endereco, // Corrigido para usar o nome correto
+    normalizarCargo(funcionario.cargo),
       funcionario.data_admissao, // Corrigido para usar o nome correto
       funcionario.data_emissao_carteira, // Corrigido para usar o nome correto
       funcionario.banco,

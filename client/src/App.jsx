@@ -1,5 +1,7 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './componentes/ProtectedRoute';
 
 // Importação dos componentes
 import Login from './componentes/pages/Login';
@@ -9,6 +11,7 @@ import Home from './componentes/home/Home';
 import CadastroFuncionario from './componentes/pages/CadastroFuncionario';
 import TabelaFuncionarios from './componentes/Funcionarios/TabelaFuncionarios/TabelaFuncionarios';
 import EditarFuncionario from './componentes/pages/EditarFuncionario';
+import CadastroUsuario from './componentes/pages/CadastroUsuario';
 
 // Importação dos componentes para acomodações
 import CadastroAcomodacao from './componentes/acomodacao/Cadastro';
@@ -49,44 +52,46 @@ function AppContent() {
       {location.pathname !== '/login' && <MenuLateral />}
       <div className="content flex-grow-1">
         <Routes>
-          {/* Rota para login */}
+          {/* Rota padrão - redireciona para login ou home */}
+          <Route path='/' element={<Navigate to='/login' replace />} />
+
+          {/* Rota pública para login */}
           <Route path='/login' element={<Login />} />
 
-          {/* Rota para a página inicial */}
-          <Route path='/home' element={<Home />} />  {/* Nova rota para a Home */}
+          {/* Rotas protegidas - requerem autenticação */}
+          <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
 
           {/* Rotas para funcionários */}
-          <Route path='/cadastro_funcionario' element={<CadastroFuncionario />} />
-          <Route path='/tabela_funcionarios' element={<TabelaFuncionarios />} />
-          <Route path='/editar_funcionario/:id' element={<EditarFuncionario />} />
+          <Route path='/cadastro_funcionario' element={<ProtectedRoute><CadastroFuncionario /></ProtectedRoute>} />
+          <Route path='/tabela_funcionarios' element={<ProtectedRoute><TabelaFuncionarios /></ProtectedRoute>} />
+          <Route path='/editar_funcionario/:id' element={<ProtectedRoute><EditarFuncionario /></ProtectedRoute>} />
+          <Route path='/cadastro_usuario' element={<ProtectedRoute><CadastroUsuario /></ProtectedRoute>} />
 
           {/* Rotas para acomodações */}
-          <Route path='/cadastro_acomodacao' element={<CadastroAcomodacao />} />
-          <Route path='/listagem_acomodacoes' element={<ListaAcomodacoes />} />
-          <Route path='/editar_acomodacao/:id' element={<CadastroAcomodacao />} />
-          {/* Rota para bloquear acomodação */}
-          <Route path='/bloquear_acomodacao' element={<BloquearAcomodacao />} />
-          // Adicione a rota para a lista de acomodações bloqueadas
-          <Route path="/acomodacoes_bloqueadas" element={<ListaAcomodacoesBloqueadas />} />
+          <Route path='/cadastro_acomodacao' element={<ProtectedRoute><CadastroAcomodacao /></ProtectedRoute>} />
+          <Route path='/listagem_acomodacoes' element={<ProtectedRoute><ListaAcomodacoes /></ProtectedRoute>} />
+          <Route path='/editar_acomodacao/:id' element={<ProtectedRoute><CadastroAcomodacao /></ProtectedRoute>} />
+          <Route path='/bloquear_acomodacao' element={<ProtectedRoute><BloquearAcomodacao /></ProtectedRoute>} />
+          <Route path="/acomodacoes_bloqueadas" element={<ProtectedRoute><ListaAcomodacoesBloqueadas /></ProtectedRoute>} />
 
           {/* Rotas para hóspedes */}
-          <Route path='/cadastro_hospede' element={<CadastroHospede />} />
-          <Route path='/tabela_hospedes' element={<TabelaHospedes />} />
-          <Route path='/editar_hospede/:id' element={<EditarHospede />} />
+          <Route path='/cadastro_hospede' element={<ProtectedRoute><CadastroHospede /></ProtectedRoute>} />
+          <Route path='/tabela_hospedes' element={<ProtectedRoute><TabelaHospedes /></ProtectedRoute>} />
+          <Route path='/editar_hospede/:id' element={<ProtectedRoute><EditarHospede /></ProtectedRoute>} />
 
           {/* Rotas para reservas */}
-          <Route path='/cadastro_reserva' element={<CadastroReserva />} />
-          <Route path='/tabela_reserva' element={<TabelaReservas />} />
-          <Route path='/cadastro_reserva/:id' element={<CadastroReserva />} />
+          <Route path='/cadastro_reserva' element={<ProtectedRoute><CadastroReserva /></ProtectedRoute>} />
+          <Route path='/tabela_reserva' element={<ProtectedRoute><TabelaReservas /></ProtectedRoute>} />
+          <Route path='/cadastro_reserva/:id' element={<ProtectedRoute><CadastroReserva /></ProtectedRoute>} />
 
           {/* Rota para o Mapa de Reservas */}
-          <Route path='/mapa_reservas' element={<MapaReservas />} />
+          <Route path='/mapa_reservas' element={<ProtectedRoute><MapaReservas /></ProtectedRoute>} />
 
-          
-          <Route path='/atalhos_relatorios' element={<AtalhoRelatorios/>} />
-          <Route path='/relatorio_financeiro' element={<RelatorioFinanceiro />} />
-          <Route path='/previsao_receita' element={<PrevisaoReceita />} />
-          <Route path='/relatorio_ocupacao' element={<RelatorioOcupacao />} />
+          {/* Rotas para relatórios */}
+          <Route path='/atalhos_relatorios' element={<ProtectedRoute><AtalhoRelatorios /></ProtectedRoute>} />
+          <Route path='/relatorio_financeiro' element={<ProtectedRoute><RelatorioFinanceiro /></ProtectedRoute>} />
+          <Route path='/previsao_receita' element={<ProtectedRoute><PrevisaoReceita /></ProtectedRoute>} />
+          <Route path='/relatorio_ocupacao' element={<ProtectedRoute><RelatorioOcupacao /></ProtectedRoute>} />
 
         </Routes>
       </div>
@@ -96,9 +101,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   );
 }
 

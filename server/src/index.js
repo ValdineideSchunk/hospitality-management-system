@@ -10,7 +10,8 @@ import { cadastroReserva, mostrandoReservas, mostrandoUmaReserva, atualizandoRes
    alterarStatusReserva, verificarDisponibilidadeAcomodacao, buscarStatusReserva, 
    buscarReservasBloqueadas} from './controllers/reservaController.js';
 import { atualizarUsuario, criarUsuario, logarUsuario, mostrarUmUsuario, mostrarUsuario } from './controllers/UsuarioController.js';
-import { buscarRelatorioFinanceiro, getPrevisaoReceita, getRelatorioOcupacao } from './controllers/relatorioFinanceiroController.js'; // Importando o controlador
+import { buscarRelatorioFinanceiro, getPrevisaoReceita, getRelatorioOcupacao } from './controllers/relatorioFinanceiroController.js';
+import { verificarToken, verificarAdmin } from './middlewares/authMiddleware.js';
 
 
 
@@ -25,61 +26,59 @@ app.get('/', (req, res) => {
   res.send('API Funcionando');
 });
 
+//Rota pública para Logar (SEM proteção)
+app.post('/logar/', logarUsuario);
+
+// ============= ROTAS PROTEGIDAS (requerem autenticação) =============
+
 // Rotas de CRUD de hóspedes
-app.post('/hospede', cadastroHospede);
-app.get('/hospede', mostrandoHospedes);
-app.get('/hospedes/:id', mostrandoUmHospede)
-app.put('/hospedes/:id', atualizandoHospede);
-app.delete('/hospede/:id', excluindoHospede);
-app.get('/verificar-cpf/:cpf', verificandoCPF);
+app.post('/hospede', verificarToken, cadastroHospede);
+app.get('/hospede', verificarToken, mostrandoHospedes);
+app.get('/hospedes/:id', verificarToken, mostrandoUmHospede)
+app.put('/hospedes/:id', verificarToken, atualizandoHospede);
+app.delete('/hospede/:id', verificarToken, excluindoHospede);
+app.get('/verificar-cpf/:cpf', verificarToken, verificandoCPF);
 
 // Rotas de CRUD de funcionário
-app.post('/funcionario', cadastroFuncionario);
-app.get('/funcionario', mostrandoFuncionarios);
-app.get('/funcionario/:id', mostrandoUmFuncionario);
-app.put('/funcionario/:id', atualizandoFuncionario);
+app.post('/funcionario', verificarToken, cadastroFuncionario);
+app.get('/funcionario', verificarToken, mostrandoFuncionarios);
+app.get('/funcionario/:id', verificarToken, mostrandoUmFuncionario);
+app.put('/funcionario/:id', verificarToken, atualizandoFuncionario);
 
 // Rotas de CRUD de acomodações
-app.post('/acomodacoes', cadastroAcomodacao);
-app.get('/acomodacoes', mostrandoAcomodacoes);  // Lista todas as acomodações
-app.get('/acomodacoes/:id', mostrandoAcomodacaoPorId);
-app.put('/acomodacoes/:id', atualizandoAcomodacao);
-app.delete('/acomodacoes/:id', excluindoAcomodacao);
-app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', mostrandoAcomodacoesDisponiveis);
-// Rota para verificar a disponibilidade de uma acomodação nas novas datas
-app.get('/acomodacoes/disponibilidade/:dataEntrada/:dataSaida/:acomodacaoAtual/:idReserva', verificarDisponibilidadeAcomodacao);
+app.post('/acomodacoes', verificarToken, cadastroAcomodacao);
+app.get('/acomodacoes', verificarToken, mostrandoAcomodacoes);
+app.get('/acomodacoes/:id', verificarToken, mostrandoAcomodacaoPorId);
+app.put('/acomodacoes/:id', verificarToken, atualizandoAcomodacao);
+app.delete('/acomodacoes/:id', verificarToken, excluindoAcomodacao);
+app.get('/acomodacoes/disponiveis/:dataInicio/:dataFim', verificarToken, mostrandoAcomodacoesDisponiveis);
+app.get('/acomodacoes/disponibilidade/:dataEntrada/:dataSaida/:acomodacaoAtual/:idReserva', verificarToken, verificarDisponibilidadeAcomodacao);
 
 // Rota para bloquear acomodação
-app.post("/bloquear", bloquearAcomodacao);
-app.post("/acomodacoes/verificar-conflito", verificarConflitoReservas);
-// Rota para buscar reservas bloqueadas
-app.get('/reservas/bloqueadas', buscarReservasBloqueadas);
-
-
+app.post("/bloquear", verificarToken, bloquearAcomodacao);
+app.post("/acomodacoes/verificar-conflito", verificarToken, verificarConflitoReservas);
+app.get('/reservas/bloqueadas', verificarToken, buscarReservasBloqueadas);
 
 // Rotas de CRUD de reserva
-app.post('/reservas', cadastroReserva);
-app.get('/reservas', mostrandoReservas);
-app.get('/reservas/:id', mostrandoUmaReserva);
-app.put('/reservas/:id', atualizandoReserva);
-app.put('/reservas/:id/status', alterarStatusReserva);
+app.post('/reservas', verificarToken, cadastroReserva);
+app.get('/reservas', verificarToken, mostrandoReservas);
+app.get('/reservas/:id', verificarToken, mostrandoUmaReserva);
+app.put('/reservas/:id', verificarToken, atualizandoReserva);
+app.put('/reservas/:id/status', verificarToken, alterarStatusReserva);
 
 //CRUD Usuario
-app.post('/usuario/', criarUsuario);
-app.get('/usuario/', mostrarUsuario);
-app.get('/usuario/:id_usuario',mostrarUmUsuario);
-app.put('/usuario/:id_usuario',atualizarUsuario);
-
-//Rota para Logar
-app.post('/logar/',logarUsuario);
+app.post('/usuario/', verificarToken, criarUsuario);
+app.get('/usuario/', verificarToken, mostrarUsuario);
+app.get('/usuario/:id_usuario', verificarToken, mostrarUmUsuario);
+app.put('/usuario/:id_usuario', verificarToken, atualizarUsuario);
 
 // Rota para Home
-app.get('/status/:acomodacaoId', buscarStatusReserva);
+app.get('/status/:acomodacaoId', verificarToken, buscarStatusReserva);
 
-// Adicione no bloco de rotas
-app.get('/relatorios/financeiro', buscarRelatorioFinanceiro);
-app.get('/relatorios/previsao-receita', getPrevisaoReceita);
-app.get('/relatorios/ocupacao', getRelatorioOcupacao);
+// Rotas de relatórios
+app.get('/relatorios/financeiro', verificarToken, buscarRelatorioFinanceiro);
+app.get('/relatorios/previsao-receita', verificarToken, getPrevisaoReceita);
+app.get('/relatorios/ocupacao', verificarToken, getRelatorioOcupacao);
 
 
 

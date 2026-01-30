@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Alert, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function BloquearAcomodacao() {
   const [acomodacaoId, setAcomodacaoId] = useState("");
@@ -10,18 +11,16 @@ function BloquearAcomodacao() {
   const [message, setMessage] = useState("");
   const [funcionario, setFuncionario] = useState({ id: "", nome: "" });
   const navigate = useNavigate();
+  const { usuario } = useAuth();
 
-  // Recupera os dados do funcionário ao montar o componente
+  // Recupera os dados do funcionário do contexto de autenticação
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const userName = localStorage.getItem("userName");
-
-    if (userId && userName) {
-      setFuncionario({ id: userId, nome: userName });
+    if (usuario) {
+      setFuncionario({ id: usuario.id_funcionario, nome: usuario.nome_funcionario });
     } else {
       setMessage("Erro: Funcionário não autenticado.");
     }
-  }, []);
+  }, [usuario]);
 
   async function handleBloquear() {
     try {

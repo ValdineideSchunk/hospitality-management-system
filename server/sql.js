@@ -2,17 +2,19 @@
 
 DROP DATABASE IF EXISTS hospedagem; 
 CREATE DATABASE hospedagem;
-
 USE hospedagem;
 
+-- =========================
+-- TABELA HÓSPEDES
+-- =========================
 CREATE TABLE hospedes (
-    id_hospede INT AUTO_INCREMENT UNIQUE,
+    id_hospede INT AUTO_INCREMENT PRIMARY KEY,
     nome_hospede VARCHAR(40),
     cpf VARCHAR(11) UNIQUE,
     rg VARCHAR(10),
     data_nascimento DATE,
     sexo VARCHAR(20),
-    Profissao VARCHAR(50), 
+    profissao VARCHAR(50), 
     observacoes VARCHAR(500),
     rua VARCHAR(50),
     numero VARCHAR(10), 
@@ -23,16 +25,16 @@ CREATE TABLE hospedes (
     complemento VARCHAR(50),
     observacoes_endereco VARCHAR(500),
     email VARCHAR(40),
-    celular VARCHAR(13),
-    PRIMARY KEY (id_hospede)
+    celular VARCHAR(13)
 );
 
-SELECT * FROM hospedes;
-
+-- =========================
+-- TABELA FUNCIONÁRIOS
+-- =========================
 CREATE TABLE funcionarios (
-    id_funcionario INT AUTO_INCREMENT UNIQUE,
+    id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
     nome_funcionario VARCHAR(40),
-	cpf VARCHAR(11) UNIQUE,
+    cpf VARCHAR(11) UNIQUE,
     rg VARCHAR(10),
     data_nascimento DATE,
     sexo VARCHAR(20),
@@ -55,13 +57,14 @@ CREATE TABLE funcionarios (
     conta VARCHAR(20),   
     status_funcionario VARCHAR(20), 
     observacoes_adicionais VARCHAR(500),
-    senha VARCHAR(255),  
-    PRIMARY KEY (id_funcionario)
+    senha VARCHAR(255)
 );
 
--- Tabela 'acomodacoes' com 'tipo' como ENUM
+-- =========================
+-- TABELA ACOMODAÇÕES
+-- =========================
 CREATE TABLE acomodacao (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     capacidade INT,
     tipo VARCHAR(100),
@@ -75,29 +78,48 @@ CREATE TABLE acomodacao (
     sinalizacaoBraille BOOLEAN DEFAULT FALSE,
     entradaAcessivel BOOLEAN DEFAULT FALSE,
     estacionamentoAcessivel BOOLEAN DEFAULT FALSE
-    );
-   
-select * from acomodacao;
+);
 
+-- =========================
+-- TABELA RESERVAS
+-- =========================
 CREATE TABLE reservas (
-    id_reserva INT AUTO_INCREMENT UNIQUE,
+    id_reserva INT AUTO_INCREMENT PRIMARY KEY,
     fk_hospede INT,
     fk_acomodacao INT,
     data_checkin DATE,
     data_checkout DATE,
     valor_diaria FLOAT,
-    numero_adulto INTEGER,
-    numero_crianca INTEGER,
+    numero_adulto INT,
+    numero_crianca INT,
     quantidade_diarias INT,
     valor_total DECIMAL(10, 2),
     observacoes VARCHAR(200),
     status_reserva VARCHAR(40),
     pago ENUM('sim', 'não') DEFAULT 'não',
     data_criacao_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (fk_hospede) REFERENCES hospedes(id_hospede) ON UPDATE CASCADE,
-    FOREIGN KEY (fk_acomodacao) REFERENCES acomodacao(id) ON UPDATE CASCADE
+    FOREIGN KEY (fk_hospede) REFERENCES hospedes(id_hospede),
+    FOREIGN KEY (fk_acomodacao) REFERENCES acomodacao(id)
 );
- 
+
+-- =========================
+-- TABELA USUÁRIOS
+-- =========================
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    login VARCHAR(255) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    id_funcionario INT NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_funcionario) 
+        REFERENCES funcionarios(id_funcionario)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- =========================
+-- VIEW RESERVAS
+-- =========================
 CREATE VIEW view_informacoes_reserva AS
 SELECT 
     r.id_reserva,
@@ -119,28 +141,37 @@ SELECT
     a.nome AS nome_acomodacao,  
     a.tipo AS tipo_acomodacao 
 FROM reservas r
-INNER JOIN hospedes h ON r.fk_hospede = h.id_hospede
-INNER JOIN acomodacao a ON r.fk_acomodacao = a.id
-;
+JOIN hospedes h ON r.fk_hospede = h.id_hospede
+JOIN acomodacao a ON r.fk_acomodacao = a.id;
 
-SELECT * FROM funcionarios;
-SELECT * FROM hospedes;
-SELECT * FROM acomodacao;
-SELECT * FROM reservas;
-SELECT * FROM view_informacoes_reserva;
+-- ==================================================
+-- CRIAÇÃO DO USUÁRIO ADMIN (SE NÃO EXISTIR)
+-- ==================================================
 
-SELECT a.*
-FROM acomodacao a
+-- Funcionário Admin
+INSERT INTO funcionarios (
+    nome_funcionario, cpf, cargo, data_admissao, status_funcionario, email
+)
+SELECT 
+    'Administrador Sistema',
+    '12345678901',
+    'Administrador',
+    '2024-01-01',
+    'Ativo',
+    'admin@hospedafacil.com'
 WHERE NOT EXISTS (
-    SELECT 1
-    FROM reservas r
-    WHERE r.fk_acomodacao = a.id
-    AND (
-        (r.data_checkin BETWEEN '2024-11-01' AND '2024-11-20') OR
-        (r.data_checkout BETWEEN '2024-11-01' AND '2024-11-20') OR
-        ('2024-11-01' BETWEEN r.data_checkin AND r.data_checkout) OR
-        ('2024-11-20' BETWEEN r.data_checkin AND r.data_checkout)
-    )
+    SELECT 1 FROM funcionarios WHERE cpf = '12345678901'
 );
 
+-- Usuário Admin
+INSERT INTO usuarios (login, senha, id_funcionario)
+SELECT
+    '12345678901',
+    '$2b$10$fweaEivkp2Zx2KfH0UcQwudFYK4wDHRsXw9eivbNBhZsFMOH/LGia',
+    id_funcionario
+FROM funcionarios
+WHERE cpf = '12345678901'
+AND NOT EXISTS (
+    SELECT 1 FROM usuarios WHERE login = '12345678901'
+);
 */
