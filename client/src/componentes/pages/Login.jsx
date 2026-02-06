@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { motion } from "framer-motion";
-import logo from "../../img/HF-Logo2.png";
+import logo from "../../img/logoLogin.png";
 import { useAuth } from "../../contexts/AuthContext";
 
 function Login() {
@@ -122,7 +122,7 @@ function Login() {
               <div className="text-center mb-4">
                 <img
                   src={logo}
-                  alt="Logo Hospeda Facil"
+                  alt="Logo hospitality-management-system"
                   style={{
                     maxWidth: "100%",
                     filter: "drop-shadow(2px 2px 5px #003f7f)",
@@ -137,7 +137,7 @@ function Login() {
                   textAlign: "center",
                 }}
               >
-                Bem-vindo a Hospeda Fácil
+                Bem-vindo a Hospitality Management System
               </h2>
 
               <Form.Group

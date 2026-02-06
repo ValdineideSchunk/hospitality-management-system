@@ -158,7 +158,7 @@ SELECT
     'Administrador',
     '2024-01-01',
     'Ativo',
-    'admin@hospedafacil.com'
+    'admin@hospitality-management-system.com'
 WHERE NOT EXISTS (
     SELECT 1 FROM funcionarios WHERE cpf = '12345678901'
 );

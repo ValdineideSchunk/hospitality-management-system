@@ -77,7 +77,7 @@ npm install
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=seu_senha
-DB_NAME=hospedafacil
+DB_NAME=hospitality-management-system
 
 # Iniciar servidor
 npm start
