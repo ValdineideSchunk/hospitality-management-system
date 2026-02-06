@@ -66,18 +66,20 @@ O sistema substitui planilhas manuais por uma plataforma integrada que centraliz
 
 ```bash
 # Clonar repositório
-git clone https://github.com/usuario/ProjetoHospedaFacil2026.git
-cd ProjetoHospedaFacil2026
+git clone https://github.com/ValdineideSchunk/hospitality-management-system.git
+cd hospitality-management-system
 
 # Configurar servidor
 cd server
 npm install
 
-# Criar .env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=seu_senha
-DB_NAME=hospedafacil
+# Configurar banco de dados
+# Edite server/src/conexao.js com os dados do MySQL
+# Exemplo:
+# host: "localhost"
+# user: "root"
+# password: "sua_senha"
+# database: "hospedagem"
 
 # Iniciar servidor
 npm start
@@ -89,16 +91,34 @@ npm start
 # Acesso em http://localhost:3000
 ```
 
+## Variáveis de Ambiente
+
+### Frontend (client)
+- `REACT_APP_API_URL` (padrão: http://localhost:5000)
+- `REACT_APP_VIACEP_URL` (padrão: https://viacep.com.br/ws)
+
+> Consulte também: `client/ENV_SETUP.md`
+
+### Backend (server)
+- `JWT_SECRET` (opcional) — se não definido, usa uma chave padrão no middleware de autenticação.
+
 ## Endpoints Principais
 
 | Recurso | Método | Rota |
 |---------|--------|------|
+| Login | POST | `/logar/` |
 | Listar hóspedes | GET | `/hospede` |
 | Cadastrar hóspede | POST | `/hospede` |
 | Verificar CPF | GET | `/verificar-cpf/:cpf` |
 | Listar reservas | GET | `/reservas` |
 | Criar reserva | POST | `/reservas` |
 | Relatório financeiro | GET | `/relatorios/financeiro` |
+
+## Arquitetura e Segurança
+
+- Backend estruturado em **MVC** (controllers, models, validations)
+- **JWT** para autenticação e rotas protegidas
+- **Bcrypt** para hash de senhas
 
 ## Estrutura do Projeto
 
@@ -123,12 +143,3 @@ npm start
 - 🎨 Interface responsiva com Bootstrap
 - ⚡ Async/await no backend para performance
 
-## Autores
-
-- [Valdineide Schunk](https://www.linkedin.com/in/valdineide-schunk)
-- [Vitor Casotti](https://www.linkedin.com/in/vitor-casotti-667a14285)
-- [Mateus Barboza](https://www.linkedin.com/in/mateus-barboza-santana)
-
-## Licença
-
-MIT
