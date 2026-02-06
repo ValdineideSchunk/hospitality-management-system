@@ -73,13 +73,11 @@ cd hospitality-management-system
 cd server
 npm install
 
-# Configurar banco de dados
-# Edite server/src/conexao.js com os dados do MySQL
-# Exemplo:
-# host: "localhost"
-# user: "root"
-# password: "sua_senha"
-# database: "hospedagem"
+# Criar .env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=seu_senha
+DB_NAME=hospedafacil
 
 # Iniciar servidor
 npm start
@@ -91,34 +89,16 @@ npm start
 # Acesso em http://localhost:3000
 ```
 
-## Variáveis de Ambiente
-
-### Frontend (client)
-- `REACT_APP_API_URL` (padrão: http://localhost:5000)
-- `REACT_APP_VIACEP_URL` (padrão: https://viacep.com.br/ws)
-
-> Consulte também: `client/ENV_SETUP.md`
-
-### Backend (server)
-- `JWT_SECRET` (opcional) — se não definido, usa uma chave padrão no middleware de autenticação.
-
 ## Endpoints Principais
 
 | Recurso | Método | Rota |
 |---------|--------|------|
-| Login | POST | `/logar/` |
 | Listar hóspedes | GET | `/hospede` |
 | Cadastrar hóspede | POST | `/hospede` |
 | Verificar CPF | GET | `/verificar-cpf/:cpf` |
 | Listar reservas | GET | `/reservas` |
 | Criar reserva | POST | `/reservas` |
 | Relatório financeiro | GET | `/relatorios/financeiro` |
-
-## Arquitetura e Segurança
-
-- Backend estruturado em **MVC** (controllers, models, validations)
-- **JWT** para autenticação e rotas protegidas
-- **Bcrypt** para hash de senhas
 
 ## Estrutura do Projeto
 
